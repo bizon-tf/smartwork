@@ -26,7 +26,7 @@ jobs:
       
     steps:
     - name: 코드 체크아웃
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       
     - name: 버전 추출
       id: version
@@ -115,7 +115,7 @@ jobs:
     
     steps:
     - name: 코드 체크아웃
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       
     - name: 빌드 결과물 다운로드
       uses: actions/download-artifact@v5
@@ -163,7 +163,7 @@ jobs:
     
     steps:
     - name: 코드 체크아웃
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         fetch-depth: 0
         
