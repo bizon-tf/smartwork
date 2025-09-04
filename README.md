@@ -17,16 +17,25 @@
 ![Vitest](https://img.shields.io/badge/Vitest-3.2-729B1B?style=flat-square&logo=vitest&logoColor=white)
 
 ### Backend
-![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.x-6DB33F?style=flat-square&logo=springboot&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.5.5-6DB33F?style=flat-square&logo=springboot&logoColor=white)
 ![Kotlin](https://img.shields.io/badge/Kotlin-2.2-7F52FF?style=flat-square&logo=kotlin&logoColor=white)
 ![Java](https://img.shields.io/badge/Java-24-007396?style=flat-square&logo=openjdk&logoColor=white)
-![Gradle](https://img.shields.io/badge/Gradle-8.x-02303A?style=flat-square&logo=gradle&logoColor=white)
+![Gradle](https://img.shields.io/badge/Gradle-9.0-02303A?style=flat-square&logo=gradle&logoColor=white)
 
 ### Database
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Latest-4169E1?style=flat-square&logo=postgresql&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17.x-4169E1?style=flat-square&logo=postgresql&logoColor=white)
 ![H2](https://img.shields.io/badge/H2_Database-Dev/Test-0000BB?style=flat-square)
 
 ## 빠른 시작
+
+### (Optional) 가상홤경 설정
+```bash
+cd frontend
+nodeenv --node=24.7.0 env-24.7.0 # 가상환경 설정
+source ./env-24.7.0/bin/activate # 가상환경 활성화
+# 가상환경 내에서 yarn 설치
+npm install -g yarn
+```
 
 ### Frontend 개발
 ```bash
