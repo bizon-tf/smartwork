@@ -15,11 +15,11 @@ jobs:
     
     steps:
     - name: 코드 체크아웃
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       
     # 프론트엔드 테스트 및 빌드
     - name: Node.js 설정
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v5
       with:
         node-version: '24.7.0'
         cache: 'yarn'
@@ -104,12 +104,12 @@ jobs:
     
     steps:
     - name: 코드 체크아웃
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         fetch-depth: 0  # SonarCloud를 위한 전체 히스토리
         
     - name: Node.js 설정
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v5
       with:
         node-version: '24.7.0'
         cache: 'yarn'
@@ -148,7 +148,7 @@ jobs:
     
     steps:
     - name: 코드 체크아웃
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       
     - name: 백엔드 JAR 다운로드
       uses: actions/download-artifact@v5

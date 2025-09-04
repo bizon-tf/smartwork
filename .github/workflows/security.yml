@@ -18,10 +18,10 @@ jobs:
     
     steps:
     - name: 코드 체크아웃
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       
     - name: Node.js 설정
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v5
       with:
         node-version: '24.7.0'
         cache: 'yarn'
@@ -59,7 +59,7 @@ jobs:
     
     steps:
     - name: 코드 체크아웃
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       
     - name: Java 24 설정
       uses: actions/setup-java@v4
@@ -97,7 +97,7 @@ jobs:
     
     steps:
     - name: 코드 체크아웃
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       
     - name: CodeQL 초기화
       uses: github/codeql-action/init@v3
