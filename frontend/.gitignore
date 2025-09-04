@@ -137,7 +137,7 @@ Desktop.ini
 tmp/
 temp/
 
-# Runtime configuration
+# 프로토타이핑용 배포 플랫폼
 .vercel/
 .netlify/
 
