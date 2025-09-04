@@ -1,0 +1,170 @@
+# 의존성
+node_modules/
+.pnp
+.pnp.js
+
+# prod 빌드
+dist/
+dist-ssr/
+build/
+out/
+
+# 개발
+.vite/
+.next/
+.nuxt/
+.cache/
+.parcel-cache/
+
+# 런타임
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# 커버리지
+coverage/
+*.lcov
+.nyc_output/
+
+# 로그
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# 환경변수
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*.local
+*.local
+
+# nodeenv(22,24)
+**/env-22*
+**/env-24*
+
+# TypeScript
+*.tsbuildinfo
+.tsbuildinfo
+
+# npm 캐시
+.npm
+
+# eslint 캐시
+.eslintcache
+
+# stylelint 캐시
+.stylelintcache
+
+# Microbundle 캐시
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# Yarn v2+
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# Package manager lock files (선택적)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# Testing
+__tests__/
+.jest/
+jest.config.*
+vitest.config.*
+
+# 스토리북
+.storybook/
+storybook-static/
+
+# Editor directories and files
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# Other editors
+*.swp
+*.swo
+*.tmp
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Windows
+*.exe
+*.msi
+
+# Temporary folders
+tmp/
+temp/
+
+# 프로토타이핑용 배포 플랫폼
+.vercel/
+.netlify/
+
+# Serverless directories
+.serverless/
+
+# FuseBox cache
+.fusebox/
+
+# DynamoDB Local files
+.dynamodb/
+
+# TernJS port file
+.tern-port
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
+
+# Local History for Visual Studio Code
+.history/
+
+# Built Visual Studio Code Extensions
+*.vsix
+
+# SvelteKit (if switching frameworks)
+.svelte-kit
+
+# lock은 현재 주석 처리
+# //TODO: 본격 개발시 주석 플고 락을 고정해서 일관된 fe 환경 보장 예정
+# *.lock
