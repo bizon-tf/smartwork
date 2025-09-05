@@ -1,0 +1,47 @@
+spring:
+  main:
+    lazy-initialization: true  # local 환경에서만 사용 (개발 속도 향상)
+  devtools:
+    restart:
+      enabled: true
+    livereload:
+      enabled: true
+  
+  # H2 Database 설정 (로컬 개발용)
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 
+  
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+        dialect: org.hibernate.dialect.H2Dialect
+
+# 로깅 설정
+logging:
+  level:
+    root: INFO
+    kr.co.businesson: DEBUG
+    org.springframework.web: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql: TRACE
+
+# 서버 설정
+server:
+  port: 8080
+  error:
+    include-message: always
+    include-binding-errors: always
+    include-stacktrace: on_param
+    include-exception: true

@@ -22,7 +22,7 @@ group = "kr.co.businesson"
 var releaseVer = "v0.0.1"
 version =
     "$releaseVer-${LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"))}"
-description = "backend"
+description = "smartwork"
 
 java {
     toolchain { languageVersion = JavaLanguageVersion.of(24) }
