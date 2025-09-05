@@ -165,7 +165,7 @@ jobs:
     - name: 백엔드 애플리케이션 실행 (백그라운드)
       working-directory: ./backend
       run: |
-        java -jar build/libs/*.jar &
+        java -jar build/libs/*[!-plain].jar &
         echo $! > app.pid
 
         # 백엔드가 완전히 시작될 때까지 헬스 엔드포인트를 폴링
