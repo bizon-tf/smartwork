@@ -41,8 +41,10 @@ logging:
     file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
   file:
     name: /var/log/smartwork/smartwork-prod.log
-    max-size: 100MB
-    max-history: 90
+  logback:
+    rollingpolicy:
+      max-file-size: 100MB
+      max-history: 90
 
 # 서버 설정
 server:
@@ -73,13 +75,8 @@ management:
     health:
       show-details: never
   metrics:
-    export:
-      prometheus:
-        enabled: true
     tags:
       application: ${spring.application.name}
       environment: prod
 
-# 보안 설정
-security:
-  require-ssl: true
+# 보안 설정 (Spring Security 설정이나 server.ssl.enabled로 대체됨)

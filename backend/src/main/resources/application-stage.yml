@@ -38,8 +38,10 @@ logging:
     file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
   file:
     name: logs/smartwork-stage.log
-    max-size: 100MB
-    max-history: 60
+  logback:
+    rollingpolicy:
+      max-file-size: 100MB
+      max-history: 60
 
 # 서버 설정
 server:
@@ -65,6 +67,6 @@ management:
     health:
       show-details: when-authorized
   metrics:
-    export:
-      prometheus:
-        enabled: true
+    tags:
+      application: ${spring.application.name}
+      environment: stage
