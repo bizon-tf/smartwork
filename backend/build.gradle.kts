@@ -15,6 +15,7 @@ plugins {
     id("io.spring.dependency-management")
     id("org.hibernate.orm")
     id("org.graalvm.buildtools.native")
+    jacoco
 }
 
 group = "kr.co.businesson"
@@ -95,6 +96,21 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    finalizedBy(tasks.jacocoTestReport) // 테스트 후 자동으로 리포트 생성
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test) // 리포트 생성 전에 테스트 실행
+    
+    reports {
+        xml.required.set(true)
+//        csv.required.set(false)
+        html.required.set(true)
+    }
+}
+
+jacoco {
+    toolVersion = "0.8.13"  // Java 24 지원 버전
 }
 
 graalvmNative {
