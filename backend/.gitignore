@@ -75,3 +75,6 @@ hs_err_pid*
 
 ### Spring Boot ###
 .spring-boot-devtools.properties
+
+### JFR ###
+*.jfr
