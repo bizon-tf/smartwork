@@ -178,12 +178,17 @@ jobs:
       with:
         fetch-depth: 0
         
-    - name: 빌드 결과물 다운로드
+    - name: 프론트엔드 빌드 결과물 다운로드
       uses: actions/download-artifact@v5
       with:
-        pattern: "*"
-        merge-multiple: true
-        path: ./artifacts/
+        name: frontend-dist
+        path: ./artifacts/frontend/
+        
+    - name: 백엔드 JAR 파일 다운로드
+      uses: actions/download-artifact@v5
+      with:
+        name: backend-jar
+        path: ./artifacts/backend/
         
     - name: 릴리즈 노트 생성
       id: release-notes
@@ -219,12 +224,86 @@ jobs:
         cat RELEASE_NOTES.md >> $GITHUB_ENV
         echo 'EOF' >> $GITHUB_ENV
         
-    - name: ZIP 파일 생성
+    - name: 아티팩트 구조 확인 및 ZIP 파일 생성
       run: |
-        cd artifacts
-        zip -r ../frontend-${{ needs.build-and-test.outputs.version }}.zip dist/ || true
-        zip -r ../backend-${{ needs.build-and-test.outputs.version }}.zip *.jar || true
-        cd ..
+        VERSION="${{ needs.build-and-test.outputs.version }}"
+        echo "=== 아티팩트 디렉토리 구조 확인 ==="
+        find ./artifacts -type f -ls || echo "아티팩트 디렉토리가 비어있습니다"
+        
+        echo "=== ZIP 파일 생성 시작 ==="
+        
+        # 프론트엔드 ZIP 생성
+        if [ -d "./artifacts/frontend" ] && [ "$(find ./artifacts/frontend -type f | wc -l)" -gt 0 ]; then
+          cd ./artifacts/frontend
+          zip -r "../../frontend-${VERSION}.zip" . -x "*.zip"
+          cd ../..
+          echo "✅ 프론트엔드 ZIP 생성 완료: frontend-${VERSION}.zip"
+        else
+          echo "⚠️  프론트엔드 파일이 없어서 ZIP 생성을 건너뜁니다"
+          touch "frontend-${VERSION}.zip"  # 빈 파일 생성하여 에러 방지
+        fi
+        
+        # 백엔드 ZIP 생성
+        if [ -d "./artifacts/backend" ] && [ "$(find ./artifacts/backend -name '*.jar' | wc -l)" -gt 0 ]; then
+          cd ./artifacts/backend
+          zip -r "../../backend-${VERSION}.zip" *.jar
+          cd ../..
+          echo "✅ 백엔드 ZIP 생성 완료: backend-${VERSION}.zip"
+        else
+          echo "⚠️  백엔드 JAR 파일이 없어서 ZIP 생성을 건너뜁니다"
+          touch "backend-${VERSION}.zip"  # 빈 파일 생성하여 에러 방지
+        fi
+        
+        echo "=== 생성된 ZIP 파일 확인 ==="
+        ls -la *.zip || echo "ZIP 파일이 생성되지 않았습니다"
+        
+    - name: 기존 릴리즈 확인 및 정리
+      run: |
+        VERSION="${{ needs.build-and-test.outputs.version }}"
+        echo "버전 ${VERSION}의 기존 릴리즈 확인 중..."
+        
+        # GitHub CLI로 기존 릴리즈 확인
+        if gh release view "${VERSION}" --json tagName > /dev/null 2>&1; then
+          echo "⚠️  기존 릴리즈 ${VERSION}이 존재합니다. 삭제 중..."
+          gh release delete "${VERSION}" --yes || echo "릴리즈 삭제 실패 (무시하고 계속)"
+        else
+          echo "✅ ${VERSION} 릴리즈가 존재하지 않습니다."
+        fi
+        
+        # 기존 태그도 확인하고 삭제
+        if git tag -l | grep -q "^${VERSION}$"; then
+          echo "⚠️  기존 태그 ${VERSION}이 존재합니다. 삭제 중..."
+          git tag -d "${VERSION}" || echo "로컬 태그 삭제 실패"
+          git push origin ":refs/tags/${VERSION}" || echo "원격 태그 삭제 실패 (무시하고 계속)"
+        else
+          echo "✅ ${VERSION} 태그가 존재하지 않습니다."
+        fi
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: ZIP 파일 존재 확인
+      run: |
+        VERSION="${{ needs.build-and-test.outputs.version }}"
+        echo "=== 릴리즈에 포함할 파일 목록 확인 ==="
+        
+        RELEASE_FILES=""
+        
+        if [ -f "frontend-${VERSION}.zip" ] && [ -s "frontend-${VERSION}.zip" ]; then
+          echo "✅ frontend-${VERSION}.zip 파일 확인됨 ($(du -h "frontend-${VERSION}.zip" | cut -f1))"
+          RELEASE_FILES="frontend-${VERSION}.zip"
+        else
+          echo "⚠️  frontend-${VERSION}.zip 파일이 없거나 비어있습니다"
+        fi
+        
+        if [ -f "backend-${VERSION}.zip" ] && [ -s "backend-${VERSION}.zip" ]; then
+          echo "✅ backend-${VERSION}.zip 파일 확인됨 ($(du -h "backend-${VERSION}.zip" | cut -f1))"
+          RELEASE_FILES="${RELEASE_FILES} backend-${VERSION}.zip"
+        else
+          echo "⚠️  backend-${VERSION}.zip 파일이 없거나 비어있습니다"
+        fi
+        
+        echo "RELEASE_FILES=${RELEASE_FILES}" >> $GITHUB_ENV
+        echo "릴리즈에 포함될 파일: ${RELEASE_FILES}"
         
     - name: GitHub 릴리즈 생성
       uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844
@@ -234,9 +313,7 @@ jobs:
         body: ${{ env.RELEASE_BODY }}
         draft: false
         prerelease: ${{ contains(needs.build-and-test.outputs.version, 'alpha') || contains(needs.build-and-test.outputs.version, 'beta') || contains(needs.build-and-test.outputs.version, 'rc') }}
-        files: |
-          frontend-${{ needs.build-and-test.outputs.version }}.zip
-          backend-${{ needs.build-and-test.outputs.version }}.zip
+        files: ${{ env.RELEASE_FILES }}
 
   notify:
     name: 릴리즈 알림
