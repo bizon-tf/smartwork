@@ -10,9 +10,10 @@ RUN apk add --no-cache curl
 # 비루트 사용자 생성
 RUN addgroup -S spring && adduser -S spring -G spring
 
+# JAR 파일명을 빌드 인자로 전달 (기본값 제공)
+ARG JAR_FILE=smartwork-*.jar
 # JAR 파일 복사 (CI에서 다운로드된 파일을 사용)
-COPY *.jar ./
-RUN mv $(ls *.jar | grep -v plain | head -1) app.jar && rm -f *plain.jar
+COPY ${JAR_FILE} app.jar
 
 # 파일 소유권 변경
 RUN chown spring:spring app.jar

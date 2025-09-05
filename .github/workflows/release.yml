@@ -123,6 +123,15 @@ jobs:
         name: ${{ matrix.component }}-${{ matrix.component == 'frontend' && 'dist' || 'jar' }}
         path: ${{ matrix.component }}/
         
+    - name: JAR 파일명 찾기 (백엔드)
+      if: matrix.component == 'backend'
+      id: jar-name
+      working-directory: ${{ matrix.component }}
+      run: |
+        JAR_FILE=$(ls *.jar | grep -v plain | head -1)
+        echo "jar_file=${JAR_FILE}" >> $GITHUB_OUTPUT
+        echo "찾은 JAR 파일: ${JAR_FILE}"
+        
     - name: Docker Buildx 설정
       uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435
       
@@ -151,6 +160,8 @@ jobs:
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
+        build-args: |
+          ${{ matrix.component == 'backend' && format('JAR_FILE={0}', steps.jar-name.outputs.jar_file) || '' }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
 
