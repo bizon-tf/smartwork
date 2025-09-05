@@ -11,7 +11,8 @@ RUN apk add --no-cache curl
 RUN addgroup -S spring && adduser -S spring -G spring
 
 # JAR 파일 복사 (CI에서 다운로드된 파일을 사용)
-COPY *[!-plain].jar app.jar
+COPY *.jar ./
+RUN mv $(ls *.jar | grep -v plain | head -1) app.jar && rm -f *plain.jar
 
 # 파일 소유권 변경
 RUN chown spring:spring app.jar
