@@ -1,6 +1,8 @@
 spring:
   application:
-    name: backend
+    name: smartwork
   threads:
     virtual:
       enabled: true
+  profiles:
+    active: local  # 기본 프로파일을 local로 설정
